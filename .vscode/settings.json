@@ -1,3 +1,45 @@
 {
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "sqltools.connections": [
+        {
+            "connectionTimeout": 30,
+            "database": "sql",
+            "dialect": "MariaDB",
+            "name": "localhost",
+            "password": "mypass",
+            "port": 3306,
+            "server": "localhost",
+            "username": "root"
+        },
+        {
+            "connectionTimeout": 30,
+            "database": "sql",
+            "dialect": "MySQL",
+            "name": "EPHRAIM",
+            "password": "root",
+            "port": 3306,
+            "server": "localhost",
+            "username": "root"
+        },
+        {
+            "connectionTimeout": 30,
+            "database": "santinos_db",
+            "dialect": "MySQL",
+            "name": "Ephraim",
+            "password": "dVhX8I6SM0UgDerl",
+            "port": 3306,
+            "server": "localhost",
+            "username": "root"
+        },
+        {
+            "connectionTimeout": 30,
+            "database": "santinos_db",
+            "dialect": "MySQL",
+            "name": "santinos",
+            "password": "dVhX8I6SM0UgDerl",
+            "port": 3306,
+            "server": "localhost",
+            "username": "root"
+        }
+    ]
 }

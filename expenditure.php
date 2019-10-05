@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 session_start();
 
 include "controller_dependency.php";
@@ -26,7 +26,7 @@ if (isset($_SESSION['ID'])) {
     }
 }
 
-?>
+?> -->
 <!doctype html>
 <html class="no-js" lang="en">
 <head>
@@ -94,7 +94,7 @@ if (isset($_SESSION['ID'])) {
                     <img src="./assets/images/avatar.png" alt="">
                 </div>
                 <div class="details">
-                    <h3 class="uk-text-bold"><?php echo $fullname; ?></h3>
+                    <!-- <h3 class="uk-text-bold"><?php echo $fullname; ?></h3> -->
                 </div>
             </div>
             <div class="links logout">
@@ -133,7 +133,7 @@ if (isset($_SESSION['ID'])) {
                             <tr>
                                 <th class="uk-width-small">S/N</th>
                                 <th>ITEM</th>
-                               
+                                <th>category</th>
                                 <th>Description</th>
                                 <th>Amount</th>
                               
@@ -146,7 +146,7 @@ if (isset($_SESSION['ID'])) {
                           <tr>
                                 <td>1</td>
                                 <td id="showitem"></td>
-                                
+                                <td id="showcategory"></td>
                                 <td id="showdescription"></td>
                                 <td >₦<i id="showamount"></i>.00</td>
                                 
@@ -178,6 +178,18 @@ if (isset($_SESSION['ID'])) {
                         <input class="uk-input" oninput="showitem()" style="color: black;" name="item" id="item" type="text" placeholder="Add item">
                     </div>
                 </div>
+
+                <div class="uk-margin">
+                        <label class="uk-form-label" for="item">Category</label>
+                        <div class="uk-margin">
+                            <select class="uk-select">
+                                <option oninput="showcategory()" name="category" id="category">Option 01</option>
+                                
+                            </select>
+                        </div>
+                    </div>
+        
+                    
                 <div class="uk-margin">
                     <label class="uk-form-label" for="amount">AMOUNT [Enter digits only, comma is not allowed as it would affect your amount]</label>
                     <div class="uk-form-controls">
@@ -189,11 +201,11 @@ if (isset($_SESSION['ID'])) {
                 <div class="uk-margin">
                     <label class="uk-form-label" for="description">DESCRIPTION</label>
                     <div class="uk-form-controls">
-                    <?php
+                    <!-- <?php
                     
                     $id = $_SESSION['ID'];
  
-                    ?>
+                    ?> -->
                         <input class="uk-input" oninput="showdescription()" name="description" style="color: black;" id="description" type="text" placeholder="Add item description">
                     </div>
                 </div>
@@ -284,6 +296,12 @@ if (isset($_SESSION['ID'])) {
                 $('#showitem').html(itemValue);
             }
 
+            function showcategory()
+            {
+                var categoryValue = $('#category').val();
+                $('#showitem').html(categoryValue);
+            }
+
             function showamount()
             {
                 var amountValue = $('#amount').val();
@@ -307,6 +325,7 @@ if (isset($_SESSION['ID'])) {
         $.post('src/expenseReceive.php',
         {amount:amountValue,
         item :itemValue,
+        category :categoryValue
         description:descriptionValue,
         id: tag 
         },

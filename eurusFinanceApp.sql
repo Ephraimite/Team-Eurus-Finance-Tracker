@@ -23,6 +23,7 @@
       `rowid` int(255) NOT NULL AUTO_INCREMENT,
       `user_id` varchar(225) NOT NULL,
       `item` varchar(255) NOT NULL,
+      'category' varchar(255) NOT NULL,
       `description` varchar(255) NOT NULL,
       `amount` varchar(255) NOT NULL,
       `date` varchar(255) NOT NULL,
@@ -35,3 +36,12 @@
       KEY `compute_index` (`month`,`day`,`user_id`),
       KEY `compute_index_one` (`year`,`date`)
     ) 
+
+    CREATE TABLE 'category'(
+      'S/N' int(255) NOT NULL,
+      'NAME' varchar(255) NOT NULL,
+
+      PRIMARY KEY('NAME')
+    )
+ 
+

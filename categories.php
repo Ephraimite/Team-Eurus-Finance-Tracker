@@ -1,4 +1,17 @@
-<?php
+<!-- <?php
+
+$mysqli = new $mysqli ('localhost', 'root', 'dVhX8I6SM0UgDerl', 'santinos');
+
+// check our connection
+if ($mysqli -> connect_error) {
+    # code...
+    die('Connect Error:' . $mysqli->connect_error . ':' . $mysqli->connect_error);
+}
+
+// insert our data
+$sql = "INSERT INTO category (S/N, NAME) VALUES( '{$mysqli->real_escape_int($_POST['S/N'])}' , '{$mysqli->real_escape_string($_POST['NAME'])}' )";
+$insert = $mysqli->query($sql);
+
 session_start();
 
 include "controller_dependency.php";
@@ -27,7 +40,7 @@ if (isset($_SESSION['ID'])) {
     }
 }
 
-?>
+?> -->
 <!doctype html>
 <html class="no-js" lang="en">
 <head>
@@ -83,7 +96,7 @@ if (isset($_SESSION['ID'])) {
                     <img src="./assets/images/avatar.png" alt="">
                 </div>
                 <div class="details">
-                    <h3 class="uk-text-bold"><?php echo $fullname; ?></h3>
+                    <!-- <h3 class="uk-text-bold"><?php echo $fullname; ?></h3> -->
                 </div>
             </div>
             <div class="links logout">
@@ -116,15 +129,8 @@ if (isset($_SESSION['ID'])) {
                             <tbody>
                             <tr>
                                 <td>1</td>
-                                <td>Carrots</td>
-                            <tr>
-                                <td>1</td>
-                                <td>Carrots</td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>Carrots</td>
-                            </tr>
+                                <td id="showname"></td>
+                           
                             </tbody>
                         </table>
 
@@ -145,13 +151,18 @@ if (isset($_SESSION['ID'])) {
                 <div class="uk-margin">
                     <label class="uk-form-label" for="euname">NAME</label>
                     <div class="uk-form-controls">
-                        <input class="uk-input" style="color: black;" id="euname" type="text"
-                               placeholder="Add Category name">
+                            <?php
+                    
+                            $id = $_SESSION['ID'];
+         
+                            ?>
+                        <input class="uk-input" oninput="showname()" name="name" style="color: black;" id="name" type="text" placeholder="Add Category Name">
                     </div>
                 </div>
 
                 <div class="uk-margin">
-                    <button class="uk-button uk-button-theme uk-width-1-1@s">Add Expenditure</button>
+                    <input class="uk-button uk-button-theme uk-width-1-1@s" type="submit" onclick="addCategory();" name="add" value="Add Category">
+                    
                 </div>
             </form>
         </div>
@@ -186,7 +197,7 @@ if (isset($_SESSION['ID'])) {
                             <img src="./assets/images/avatar.png" alt="">
                         </div>
                         <div class="details">
-                            <h3 class="uk-text-bold"><?php echo $fullname; ?></h3>
+                            <!-- <h3 class="uk-text-bold"><?php echo $fullname; ?></h3> -->
                         </div>
                     </div>
                     <div class="links logout">
@@ -199,6 +210,22 @@ if (isset($_SESSION['ID'])) {
         </div>
     </div>
 </section>
+
+    
+<?php
+require "config.php";
+$sql = "SELECT* FROM category";
+$result = $connect->query($sql);
+while ($data = $result->fetch_object()) {
+echo $data->item;
+
+}
+?>
+
+
+
+
+
 
 <script src="assets/js/app.js"></script>
 </body>

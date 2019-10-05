@@ -423,6 +423,9 @@ if((count($yearlyExpensesArray[0]['USER_DATA']) > 0) && (is_array($yearlyExpense
                         <div>
                             <a href="expenditure">Add Expenditure</a>
                         </div>
+                        <div>
+                            <a href="expenditure">Add Category</a>
+                        </div>
                         <div class="active">
                             <a href="dashboard">Summary</a>
                         </div>
