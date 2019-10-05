@@ -4,7 +4,7 @@ date_default_timezone_set('Africa/Lagos');
 /**
  * @author Mofehintolu MUMUNI
  * 
- * @description code for dashboard
+ * @description Register controller that handles registration
  * @slack @Bits_and_Bytes
  * @copyright 2019
  */
@@ -34,11 +34,17 @@ if ($userData['STATUS'] === 'FAILURE') {
 }
 
 //instantiate controller class and select apprioprate class
-$objExpense = factory::ExpensesController();
+//$objExpense = factory::ExpensesController();
 
-$weeklyExpensesArray = $objExpense->weeklyExpenses($_SESSION['ID']);
-$monthlyExpensesArray = $objExpense->monthlyExpenses($_SESSION['ID']);
-$yearlyExpensesArray = $objExpense->yearlyExpenses($_SESSION['ID']);
+//$weeklyExpensesArray = $objExpense->weeklyExpenses($_SESSION['ID']);
+//$monthlyExpensesArray = $objExpense->monthlyExpenses($_SESSION['ID']);
+//$yearlyExpensesArray = $objExpense->yearlyExpenses($_SESSION['ID']);
+$objExpense = factory::BudgetController();
+
+$weeklyExpensesArray = $objExpense->checkWeeklyBudget($_SESSION['ID']);
+$monthlyExpensesArray = $objExpense->checkMonthlyBudget($_SESSION['ID']);
+$yearlyExpensesArray = $objExpense->checkYearlyBudget($_SESSION['ID']);
+
 
 //handle weekly expenses
 if(($weeklyExpensesArray[0]['STATUS'] == "ERROR") || ($weeklyExpensesArray[0]['TOTAL_EXPENSES'] == null))
@@ -115,13 +121,18 @@ if((count($yearlyExpensesArray[0]['USER_DATA']) > 0) && (is_array($yearlyExpense
                 <img src="./assets/images/logo.svg" alt="">
             </div>
             <div class="links">
-                        <div class="active">
+                        <div class="">
                             <a href="dashboard">Summary</a>
                         </div>
                         <div>
                             <a href="expenditure">Add Expenditure</a>
                         </div>
-                       
+                        <div class="">
+                        <a href="addbudget">Add Budget</a>
+                        </div>
+                        <div class="active">
+                        <a href="budgetStatus">View Budget Status</a>
+                        </div>
 
                       <!--  <div>
                           <a href="search">Custom Search</a>
@@ -221,6 +232,18 @@ if((count($yearlyExpensesArray[0]['USER_DATA']) > 0) && (is_array($yearlyExpense
                 <li>
                         <h3 class="weekbg">This Week</h3>
                         <?php
+                        if((count($weeklyExpensesArray[0]['USER_DATA']) > 0) && (is_array($weeklyExpensesArray[0]['USER_DATA']) == "TRUE") && ($weeklyExpensesArray[0]['STATUS'] == 'SUCCESS'))
+                        {
+                        ?>
+                        <p>FROM: <?php echo $weeklyExpensesArray[0]['WEEK_START'];  ?> TO: <?php echo $weeklyExpensesArray[0]['WEEK_END'];  ?></p>
+                        <P class="weekbg">Budget Amount: ₦<?php echo $objExpense->format_number($weeklyExpensesArray[0]['BUDGET_AMOUNT']); ?>.00</P>
+                        <h4 ><?php echo $weeklyExpensesArray[0]['BUDGET_STRING'];  ?></h4>
+                        
+                        <?php
+                        }
+                        ?>
+                        
+                        <?php
 
                             
                 if((count($weeklyExpensesArray[0]['USER_DATA']) > 0) && (is_array($weeklyExpensesArray[0]['USER_DATA']) == "TRUE") && ($weeklyExpensesArray[0]['STATUS'] == 'SUCCESS'))
@@ -290,9 +313,22 @@ if((count($yearlyExpensesArray[0]['USER_DATA']) > 0) && (is_array($yearlyExpense
 
 
                     <li>
-
+         
                         <h3 class="monthbg">This Month</h3>
                         <p class="monthbg"><?php echo date("F",time()); ?></p>
+                       
+                       <?php
+                        if((count($monthlyExpensesArray[0]['USER_DATA']) > 0) && (is_array($monthlyExpensesArray[0]['USER_DATA']) == "TRUE") && ($monthlyExpensesArray[0]['STATUS'] == 'SUCCESS'))
+                        {
+                        ?>
+
+                        <h4 class="weekbg">Budget Amount: ₦<?php echo $objExpense->format_number($monthlyExpensesArray[0]['BUDGET_AMOUNT']); ?>.00</h4>
+                        <h4 ><?php echo $monthlyExpensesArray[0]['BUDGET_STRING'];  ?></h4>
+                        
+                        <?php
+                        }
+                        ?>
+                        
                         <?php
 
                             
@@ -353,10 +389,23 @@ if((count($yearlyExpensesArray[0]['USER_DATA']) > 0) && (is_array($yearlyExpense
 
                         <h3 class="yearbg">This Year</h3>
                         <p class="monthbg"><?php echo date("Y",time()); ?></p>
+                       
+                       <?php
+                        if((count($yearlyExpensesArray[0]['USER_DATA']) > 0) && (is_array($yearlyExpensesArray[0]['USER_DATA']) == "TRUE") && ($yearlyExpensesArray[0]['STATUS'] == 'SUCCESS'))
+                        {
+                       ?>
+
+                        <h4 class="weekbg">Budget Amount: ₦<?php echo $objExpense->format_number($yearlyExpensesArray[0]['BUDGET_AMOUNT']); ?>.00</h4>
+                        <h4 ><?php echo $yearlyExpensesArray[0]['BUDGET_STRING'];  ?></h4>
+
+                    <?php
+                        }
+                    ?>
+
          <?php
 
             if((count($yearlyExpensesArray[0]['USER_DATA']) > 0) && (is_array($yearlyExpensesArray[0]['USER_DATA']) == "TRUE") && ($yearlyExpensesArray[0]['STATUS'] == 'SUCCESS'))
-                {
+            {
             $yearlyCount = sizeof($yearlyExpensesArray[0]['USER_DATA']);
         
             $start = 0;
@@ -400,43 +449,6 @@ if((count($yearlyExpensesArray[0]['USER_DATA']) > 0) && (is_array($yearlyExpense
             </table>';
         }
             ?>
-        <!--section for select date-->
-        <section>
-                
-                <div class="row ml-1 period">
-                    <p>Specify Period</p>
-                </div>
-                <div class="row ml-1">
-                    <form class="form-inline col-md-12">
-                        <div class="form-group col-md-4">
-                            <label class="mr-1 medium">Start Date</label>
-                            <input required="" type="date" name="startDate" id="startDate" class="form-control mr-5 specify" value="2019-10-01">
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label class="mr-1 medium">End Date</label>
-                            <input required="" type="date" name="endDate" id="endDate" class="form-control mr-5 specify" value="2019-10-03">
-                        </div>
-                        <div class="form-group col-md-4">
-                            <button type="submit" class="btn form-control specifyBtn pl-5 pr-5 specify mb-1">Generate</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="row ml-1 mt-3">
-                    <table class="table transTable col-sm-12">
-                        <thead>
-                            <tr>
-                                <th>Transaction Date</th>
-                                <th>Item</th>
-                                <th>Description</th>
-                                <th>Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                
-                        </tbody>
-                    </table>
-                </div>
-                            </section>
 
                         <!--- <div class="uk-margin">
                             <button class="uk-button uk-button-theme">Export to PDF</button>
@@ -457,14 +469,18 @@ if((count($yearlyExpensesArray[0]['USER_DATA']) > 0) && (is_array($yearlyExpense
                         <img src="./assets/images/logo.svg" alt="">
                     </div>
                     <div class="links">
+                        
+                        <div class="">
+                            <a href="dashboard">Summary</a>
+                        </div>
                         <div>
                             <a href="expenditure">Add Expenditure</a>
                         </div>
-                        <div>
-                            <a href="expenditure">Add Category</a>
+                        <div class="">
+                        <a href="addbudget">Add Budget</a>
                         </div>
                         <div class="active">
-                            <a href="dashboard">Summary</a>
+                        <a href="budgetStatus">View Budget Status</a>
                         </div>
 
                         <!--  <div>
